@@ -1,0 +1,622 @@
+<?php 
+session_start();
+
+  include("connection.php");
+  include("functions.php");
+  require_once 'dbConfig.php';
+
+  $user_data = check_login($con);
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>My Common Room</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.4.0/css/font-awesome.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <!-- <script src="newHome.js"></script> -->
+  <style>
+    /* import fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Amatic+SC&family=Fredoka:wght@300&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Fredoka&display=swap');
+    
+     /* Remove the navbar's default margin-bottom and rounded borders */
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+    
+    /* Add a gray background color and some padding to the footer */
+    footer {
+      background-color: #f2f2f2;
+      padding: 25px;
+    }
+
+    .topnav{
+        overflow: hidden;
+        background-color: #333;
+    }
+    .topnav a {
+        float: left;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 25px 16px;
+        text-decoration: none;
+        font-size: 17px;
+    }
+    .topnav a:hover {
+        background-color: #e0a1ad;
+        color: black;
+    }
+
+    .topnav a.active {
+        background-color: #B77682;
+        color: white;
+    }
+
+    .topnav-right {
+        float: right;
+    }
+
+    input[type=text], select, textarea {
+      width: 100%; /* Full width */
+      padding: 12px; /* Some padding */ 
+      border: 1px solid #ccc; /* Gray border */
+      border-radius: 4px; /* Rounded borders */
+      box-sizing: border-box; /* Make sure that padding and width stays in place */
+      margin-top: 6px; /* Add a top margin */
+      margin-bottom: 16px; /* Bottom margin */
+      resize: vertical /* Allow the user to vertically resize the textarea (not horizontally) */
+    }
+
+    
+    
+
+    /* Add a background color and some padding around the form */
+    .containerform {
+      border-radius: 5px;
+      background-color: #f2f2f2;
+      padding: 20px;
+    }
+
+    .jumbotron {
+      height: 800px;
+      width: 100%;
+      text-align: center;
+      /* https://www.google.com/search?q=picture+of+accommodation+rooms+hq&tbm=isch&ved=2ahUKEwiG8cfBtsX2AhXkxoUKHVYWDrUQ2-cCegQIABAA&oq=picture+of+accommodation+rooms+hq&gs_lcp=CgNpbWcQAzoHCCMQ7wMQJ1B6WKkCYLYDaABwAHgAgAE4iAHPAZIBATSYAQCgAQGqAQtnd3Mtd2l6LWltZ8ABAQ&sclient=img&ei=Qh0vYobIBuSNlwTWrLioCw&bih=754&biw=1536#imgrc=OqLZFAs7U8u6RM */
+      background-image: url(img/lowconbg2.png);
+      background-size: cover;
+      /* filter: contrast(0.4); */
+    
+    }
+
+    .amaticFont{
+      font-family: 'Amatic SC', cursive;
+    }
+
+    .fredokaFont{
+      font-family: 'Fredoka', sans-serif;
+    }
+
+    .image {
+    position: relative;
+    width: 400px;
+    }
+
+    .image__img {
+        display: block;
+        width: 100%;
+    }
+
+    .image__overlay {
+        position: absolute;
+        margin-left: 13px;
+        top: 0;
+        left: 0;
+        right: 13px;
+        width: 94%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.6);
+        color: #ffffff;
+        font-family: 'Quicksand', sans-serif;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        transition: opacity 0.25s;
+    }
+
+      .image__overlay--blur {
+          backdrop-filter: blur(5px);
+      }
+
+      .image__overlay--primary {
+          background: #009578;
+      }
+
+      .image__overlay > * {
+          transform: translateY(20px);
+          transition: transform 0.25s;
+      }
+
+      .image__overlay:hover {
+          opacity: 1;
+      }
+
+      .image__overlay:hover > * {
+          transform: translateY(0);
+      }
+
+      .image__title {
+          font-size: 2em;
+          font-weight: bold;
+      }
+
+      .image__description {
+          font-size: 1.25em;
+          margin-top: 0.25em;
+      } 
+
+      /*-----------------------
+----- Basic Styles -----
+-------------------------*/
+
+body{
+    font-family: Raleway, Arial, sans-serif;
+    font-size:16px;
+    font-weight:300;
+    color:#6d6d6d;
+    overflow-x:hidden;
+}
+
+a{
+    color:#B77682;
+    text-decoration:none
+}
+
+a:hover,a:focus{
+    color:#B77682;
+    text-decoration:underline
+}
+
+a:focus,
+.btn:focus {
+    outline: none;
+}
+
+.img-responsive {
+    border: 1px solid #ddd;
+}
+
+/*-----------------------
+----- Typo Styles ------
+-------------------------*/
+h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6{
+    font-weight:300;
+}
+
+.big-text{
+    font-size:58px;
+    color: whitesmoke;
+    font-weight:300;
+    line-height:62px;
+    letter-spacing:0.01em;
+    word-spacing: 0.15em;
+    text-transform:uppercase;
+}
+
+.section-title{
+    margin-top:-20px;
+    margin-bottom: 80px;
+    text-align:center;
+}
+
+/*-----------------------
+----- Layout Styles -----
+-------------------------*/
+
+.add-padding {
+    padding-top:20px;
+    padding-bottom:50px;
+}
+
+/*-----------------------
+----- Color Styles ------
+-------------------------*/
+
+.bg-color1{
+    color:#fff;
+    background:#509B9E;
+}
+
+.bg-color2{
+    color:#fff;
+    background:#f9398c;
+}
+
+.bg-color3{
+    color:#fff;
+    background:#334959;
+}
+
+.border-bottom-color2{
+    border-bottom:7px solid #B77682;
+}
+
+.border-top-color2{
+    border-top:7px solid #B77682;
+}
+
+.color1 .service-icon,
+.color1.service-item ul li:nth-child(2):before{
+    background:#509B9E;
+}
+
+.color1 .service-icon:after{
+    border:3px solid #509B9E;
+}
+
+.color2 .service-icon,
+.color2.service-item ul li:nth-child(2):before{
+    background:#f9398c;
+}
+
+.color2 .service-icon:after{
+    border:3px solid #f9398c;
+}
+
+.color3 .service-icon,
+.color3.service-item ul li:nth-child(2):before{
+    background:#334959;
+}
+
+.color3 .service-icon:after{
+    border:3px solid #334959;
+}
+
+/*------------------
+----- Buttons ------
+--------------------*/
+
+.btn-color1,
+.btn-color2{
+    padding: 10px 30px;
+    color:#fff;
+    font-size: 21px;
+    font-weight: 300;
+    background:#B77682;
+    outline: none !important;
+    border-radius: 0;
+    transition: opacity .2s ease-out;
+}
+
+.btn-color1{
+    background:#509B9E;
+}
+
+.btn-color1:hover,
+.btn-color2:hover{
+    color:#fff;
+    opacity: 0.9;
+}
+
+.btn-color1:focus,
+.btn-color1:active,
+.btn-color2:focus,
+.btn-color2:active{
+    color:#fff;
+}
+
+.btn-color1 .fa,
+.btn-color2 .fa{
+    margin-right: 15px;
+}
+
+.whiteText {
+  color: whitesmoke;
+}
+
+/*----------------------
+----- Contact Styles ----
+------------------------*/
+
+#contact{
+    background-image:url('img/footerbg2.jpg');
+    background-size: cover;
+    background-repeat:no-repeat;
+    background-position:0 100%;
+    background-color: #fff;
+}
+
+#contact-form .form-group label{
+    display:none;
+    font-size:18px;
+    line-height:24px;
+    font-weight:100;
+    text-transform:uppercase;
+}
+
+#contact-form.no-placeholder .form-group label{
+    display:block;
+}
+
+#contact-form .controls {
+    padding:0;
+    margin-bottom:30px;
+    border:1px solid #ddd;
+    border-radius:2px;
+}
+
+#contact-form .form-control {
+    background:transparent !important;
+    border:none;
+    border-bottom:3px solid transparent;
+    border-radius:0;
+    outline:none;
+    box-shadow:none;
+    height:56px;
+    font-size:21px;
+    line-height:32px;
+    font-weight:100;
+    padding-left:64px;
+    -webkit-transition:border-color .3s ease-out;
+    transition:border-color .3s ease-out;
+    border-radius:2px;
+}
+
+#contact-form .form-group{
+    position:relative;
+}
+
+#contact-form .form-group [class*=fa] {
+    display:block;
+    width:64px;
+    position:absolute;
+    top:0;
+    left:5px;
+    color:#e5e5e5;
+    font-size:24px;
+    line-height:53px;
+    text-align:center;
+    font-weight:300;
+    opacity:0.5;
+    transition:opacity .2s ease-out;
+}
+
+#contact-form.no-placeholder .form-group [class*=fa]{
+    top:30px;
+}
+
+#contact-form .form-control:focus + [class*=fa]{
+    opacity:1;
+}
+
+#contact-form textarea.form-control {
+    height:auto;
+    max-width:100%;
+    min-width:100%;
+    font-size:21px;
+    line-height:32px;
+    padding-top:10px;
+}
+
+#contact-form .form-control:focus {
+    background:#fff;
+    border-bottom:3px solid #B77682;
+    outline:none;
+    box-shadow:none;
+    -webkit-transition:border-color .3s ease-in;
+    transition:border-color .3s ease-in;
+}
+
+#contact-form .error-message {
+    padding:5px 0;
+    position:absolute;
+    top:-30px;
+    right:0;
+    font-size:14px;
+    font-weight:300;
+    color:#ff0000;
+    z-index:10;
+}
+
+#contact-form .error-message:before {
+    content:"\00d7";
+    font-size: 21px;
+    line-height: 21px;
+    margin-right: 5px;
+}
+
+/*----------------------
+----- Footer Styles ----
+------------------------*/
+
+#main-footer {
+    background: #fff;
+}
+
+#main-footer p a {
+    padding-bottom: 40px;
+    font-size: 25px;
+    text-decoration: none;
+}
+
+#main-footer p {
+    text-align: center; 
+}
+
+.social-links {
+    list-style:none;
+    margin:0;
+    padding:0;
+    margin-bottom:30px;
+}
+
+.social-links li{
+    display:inline-block;
+    margin:0 5px;
+    border-radius:3px;
+    box-shadow:0 4px 0 transparent;
+    -webkit-transition:all .3s ease-out;
+    transition:all .3s ease-out;
+}
+
+.social-links li a {
+    display:block;
+    color:#fff;
+    font-size:21px;
+    width:50px;
+    height:50px;
+    line-height:50px;
+    text-align:center;
+    background:#509B9E;
+    border-radius:50%;
+    -webkit-transition:all .3s ease-out;
+    transition:all .3s ease-out;
+}
+
+.social-links li a:hover {
+    color:#fff;
+    background:#f9398c;
+}
+
+
+</style>
+</head>
+<body>
+
+<!-- Navbar here -->
+<div class="topnav">
+    <img src="img/logowobg.png" style="width:100px;height:75px;">
+      <div class="topnav-right">
+          <a class="active" href="./">Home</a>
+          <a href="../store/store.php">Flat Finder</a>
+          <a href="../flatmate-finder/rommate_finder.php">Flat Share</a>
+          <a href="../about-us/aboutUs.php">About</a>
+          <a href="./MyAccountPage.php"><span class="glyphicon glyphicon-log-in"></span> Account</a>
+      </div>
+</div>
+
+
+<div class="jumbotron">
+  <div class="container text-center">
+  <div style="padding: 100px;"></div>
+    <h1 class="amaticFont" style="color:white;">My Common Room</h1>      
+    <p class="fredokaFont" style="color:white">Struggling to find a place to stay? We got you covered</p>
+  </div>
+</div>
+
+
+<div class="container-fluid bg-3 text-center">    
+  <h3 class="fredokaFont">Get Started</h3><br>
+  <div class="row">
+    <div class="col-sm-3">
+      <img src="img/storeLogo.png" class="img-responsive" style="width:100%" alt="Image">
+      <!-- Insert link to Store -->
+      <a href="../store/store.php">
+        <div class="image__overlay">
+        <p class="image__title fredokaFont">Flat Finder</p>
+        <p class="image__description fredokaFont">Find your place</p>
+        </div>
+      </a>
+    </div>
+    <div class="col-sm-3"> 
+        <img src="img/FlatmateNew.jpg" class="img-responsive" style="width:100%" alt="Image">
+        <!-- Link to flatmatefinder -->
+        <a href="../flatmate-finder/rommate_finder.php">
+            <div class="image__overlay">
+            <p class="image__title fredokaFont">Flat Share</p>
+            <p class="image__description fredokaFont">Find your friend</p>
+            </div>
+        </a>
+    </div>
+    <div class="col-sm-3">
+        <img src="img/AboutUsNew.jpg" class="img-responsive" style="width:99%" alt="Image">
+        <!-- Link to About Us -->
+        <a href="../about-us/aboutUs.php">
+            <div class="image__overlay">
+            <p class="image__title fredokaFont">About Us</p>
+            <p class="image__description fredokaFont">MCR bio</p>
+            </div>
+        </a>
+    </div>
+    <div class="col-sm-3"> 
+        <img src="img/MyAcc2.jpg" class="img-responsive" style="width:100%" alt="Image">
+        <!-- Link to MyAcc -->
+        <a href="./MyAccountPage.php">
+            <div class="image__overlay">
+            <p class="image__title fredokaFont">My Account</p>
+            <p class="image__description fredokaFont">Customise your profile</p>
+            </div>
+        </a>
+    </div>
+  </div>
+</div><br>
+
+<section id="contact" class="add-padding border-top-color2">
+        
+  <div class="container text-center">
+    
+    <div class="row">
+    
+      <div class="col-sm-6 col-md-5 text-right scrollimation fade-up d1">
+      
+        <h1 class="big-text">Contact Us</h1>
+        
+        <p class="lead whiteText fredokaFont">My Common Room offers a variety of services regarding accommodation<br></p>
+
+        <p class="whiteText fredokaFont">You can use these services as you see fit. Your data will be kept private per the <a style="color:#B77682" href="../home/Privacy_Policy.pdf" target = "_blank">Privacy Policy</a>
+        <p class="whiteText fredokaFont">Please feel free to contact us with questions regarding our services. Alternatively, bugs or issues can also be reported and we will be happy to assist you.</p>
+
+      
+      </div>
+    
+      <!--=== Contact Form ===-->
+
+      <form id="contact-form" class="col-sm-6 col-md-offset-1 scrollimation fade-left d3" action="contactUs.php" method="post" novalidate>
+      <!-- <form id="contact-form" class="col-sm-6 col-md-offset-1 scrollimation fade-left d3" method="post" novalidate> -->
+        
+        <div class="form-group">
+          <label class="control-label" for="contact-name">Name</label>
+          <div class="controls">
+          <input id="contact-name" name="contactName" placeholder="Your name" class="form-control requiredField whiteText fredokaFont" data-new-placeholder="Your name" type="text" data-error-empty="Please enter your name">
+          <i class="fa fa-user"></i>
+          </div>
+        </div><!-- End name input -->
+        
+        <div class="form-group">
+          <label class="control-label" for="contact-mail">Email</label>
+          <div class=" controls">
+          <input id="contact-mail" name="email" placeholder="Your email" class="form-control requiredField whiteText fredokaFont" data-new-placeholder="Your email" type="email" data-error-empty="Please enter your email" data-error-invalid="Invalid email address">
+          <i class="fa fa-envelope"></i>
+          </div>
+        </div><!-- End email input -->
+        
+        <div class="form-group">
+          <label class="control-label" for="contact-message">Message</label>
+          <div class="controls">
+            <textarea id="contact-message" name="comments"  placeholder="Your message" class="form-control requiredField whiteText fredokaFont" data-new-placeholder="Your message" rows="6" data-error-empty="Please enter your message"></textarea>
+            <i class="fa fa-comment"></i>
+          </div>
+        </div><!-- End textarea -->
+        
+        <p><button name="submit" type="submit" class="btn btn-color2 btn-block fredokaFont" data-error-message="Error!" data-sending-message="Sending..." data-ok-message="Message Sent"><i class="fa fa-paper-plane"></i>Send Message</button></p>
+        <input type="hidden" name="submitted" id="submitted" value="true" />
+
+        
+      </form><!-- End contact-form -->
+      
+    </div>
+    
+  </div>
+
+</section>
+  
+
+</body>
+</html>
